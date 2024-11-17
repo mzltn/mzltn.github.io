@@ -4,23 +4,10 @@ var answerMode = "number";
 var slider = '';
 var waiting = false;
 
-function getVoiceForLang(language, country) {
-	var vcs=speechSynthesis.getVoices();
-	for (var i=0;i<vcs.length;i++) {
-		lang = vcs[i].lang
-		tag1 = language + '_' + country;
-		tag2 = language + '-' + country;
-		if (lang == tag1 || lang == tag2)
-			return vcs[i];
-	}
-	return null;
-}
-
 function readAloud(s) {
   if ($("#tts-on").is(":checked")) {
     var utterance = new SpeechSynthesisUtterance(s);
-    utterance.voice = getVoiceForLang('ko', 'KR');
-	utterance.lang = 'ko-KR';
+    utterance.lang = 'ko_KR';
     utterance.rate = $("#tempoSlider").slider('getValue')/100.0;
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);

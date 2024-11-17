@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript">
+function prn_vcs() {
+	console.log('proba');
+	id=setInterval( function() {
+		console.log('proba2');
+		var vcs=speechSynthesis.getVoices();
+		var s='';
+		for (var i=0;i<vcs.length;i++) {
+			s += vcs[i].lang + ' - ';
+			s += vcs[i].name + ' - ';
+			s += vcs[i].voiceURI + '<br/>';
+		}
+		document.getElementById('v').innerHTML=s;
+		if (vcs.length > 0) {
+			clearInterval(id);
+		}
+			
+		}, 100);
+}
+</script>
+</head>
+<body>
+<div id="v"></div>
+<script>
+prn_vcs();
+</script>
+</body>
+</html>
