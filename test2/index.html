@@ -143,12 +143,13 @@
           data-slider-value="[1,11]" data-slider-lock-to-ticks="true" data-slider-tooltip="hide">
       </div>
 
+      <hr/>
+
+      <div id="TtsNotFoundAlert" class="alert alert-primary" role="alert">Korean language support was not detected. You may need to install the Korean language pack for your device for text-to-speech to work.</div>
+
       <div class="row justify-content-center">
-        <span class="text-end text-body col-3 align-middle" style="white-space: pre">Silent</span>
-        <div class="col-auto form-check form-switch d-flex flex-row justify-content-center align-items-center p-0">
-          <input class="form-check-input col-2 m-0 " type="checkbox" role="switch" id="tts-on" checked>
-        </div>
-        <span class="text-body col-3 align-middle">Read aloud</span>
+        <span class="text-body text-center mb-1">Speech</span>
+        <select id="tts-select" class="form-select mw-100 align-middle" style="width: 300pt"></select>
       </div>
 
       <div class="row justify-content-center" id="tempoSliderDiv">
