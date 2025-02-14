@@ -234,7 +234,7 @@ function test(){
   }
 }
 
-function _number_to_native(number) {
+function _number_to_native(number, contraction) {
   if (number == 0) return "영";
   if (number >= 100 || number < 0) return "";
 
@@ -244,7 +244,39 @@ function _number_to_native(number) {
   const tens_hangul = ["", "열", "스물", "서른", "마흔", "쉰", "예순", "일흔", "여든", "아흔"];
   const ones_hangul = ["", "하나", "둘", "셋", "넷", "다섯", "여섯", "일곱", "여덟", "아홉"];
 
-  return tens_hangul[tens] + ones_hangul[ones];
+  const tens_hangul_contr = ["", "열", "스무", "서른", "마흔", "쉰", "예순", "일흔", "여든", "아흔"];
+  const ones_hangul_contr = ["", "한", "두", "세", "네", "다섯", "여섯", "일곱", "여덟", "아홉"];
+
+  if (!contraction)
+    return tens_hangul[tens] + ones_hangul[ones];
+  else
+    return tens_hangul_contr[tens] + ones_hangul_contr[ones];
+}
+
+function _number_to_time(hour, minute) {
+  if (hour == 12 && minute == 0) return "정오";
+  if (hour == 0 && minute == 0) return "자정";
+
+  if (hour < 6 || hour >= 21)
+    tod = "밤";
+  else if (hour >= 6 && hour < 9)
+    tod = "아침";
+  else if (hour >= 9 && hour < 12)
+    tod = "오전";
+  else if (hour >= 12 && hour < 14)
+    tod = "점심";
+  else if (hour >= 14 && hour < 18)
+    tod = "오후";
+  else if (hour >= 18 && hour < 21)
+    tod = "저녁";
+
+  if (hour > 12)
+    hour -= 12;
+
+  var rv = `${tod} ${_number_to_native(hour, true)} 시`
+  if (minute != 0)
+    rv += ` ${_number_to_sino(minute.toString())} 분`
+  return rv;
 }
 
 function genQuestion() {
@@ -252,7 +284,7 @@ function genQuestion() {
   var number = "";
   if (questionMode == "native") {
     var number = randInt(0, 99);
-    hangul = _number_to_native(number);
+    hangul = _number_to_native(number, false);
     number = number.toString();
   } else if (questionMode == "sino") {
     var [lowBound, upperBound] = $("#rangeSlider").slider("getValue");
@@ -294,9 +326,17 @@ function genQuestion() {
     var number_day = randInt(1, months_len[number_month])
 
     hangul = months[number_month] + " " + _number_to_sino(number_day.toString()) + "일";
-    const date = new Date(Date.UTC(2025, number_month /* 0..11 */, number_day));
+    const date = new Date(2025, number_month /* 0..11 */, number_day);
     const options = { month: 'long', day: 'numeric' };
     number = date.toLocaleDateString(undefined, options);
+  } else if (questionMode == "time") {
+    var number_hour = randInt(0, 23);
+    var number_minute = randInt(0, 11)*5;
+    hangul = _number_to_time(number_hour, number_minute)
+
+    const time = new Date(2025, 1, 1, number_hour, number_minute);
+    const options = { dayPeriod:'narrow', hour: 'numeric', minute: '2-digit' }
+    number = time.toLocaleTimeString(undefined, options);
   }
   hangul = hangul.trim();
   var questionText = "";
