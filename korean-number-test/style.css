@@ -15,3 +15,7 @@ input[type=number] {
 .slider {
   width: 70vw !important;
 }
+
+.offcanvas.offcanvas-bottom {
+  --bs-offcanvas-height: 70vh;
+}
